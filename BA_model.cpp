@@ -1,5 +1,6 @@
 #include<iostream>
 #include<cmath>
+#include<istream>
 #include "makelink.h"
 
 using namespace std;
@@ -59,7 +60,15 @@ int main(){
 	   cout << "初期ノード数が定義外" << endl;
 	   exit(0);
 	}
-
+	//トポロジ 作成モードの場合はファイルを開きBAトポロジを作成する
+	string filename;
+	if(topology_flag == create){
+	cout << "ファイル名を入力してください" << endl;
+	cin >> filename ;
+	fo.open(filename);
+	if(!fo){
+		cerr << filename << ": cannot opent the file" << endl;
+	}
 	//BA modelのアルゴリズムに基づくトポロジを ノード数がt_numまで生成する
         for(int i = start_num; i < t_num; i++){
 
@@ -74,6 +83,10 @@ int main(){
 
                                 if(R < 0){
                                     makelink(network,j,i);
+				　　//生成modeの時，ファイルにリンクノード二つを書き込む
+				　　if(topology_flag == create){
+					  
+					}
                                     network_edge_num += 2;
                                     link_num[j]++;
                                     link_num[i]++;
@@ -84,5 +97,22 @@ int main(){
                                 }
                         }
                     }
-                }
+         }//for(int i = start_num; i < t_num; i++)
+	}//if(topology_flag == create){
+	
+	if(topology_flag == read){
+		string line_str;
+		int first_num, second_num;
+		cout << "読み込むファイル名を入力してください" << endl;
+		cin >> filename ;
+		fo2.open(filename);
+		if(!fo2){
+			cerr << filename << ": cannot opent the file" << endl;
+		}
+		while(getline(fo2,line_str)){
+	 		sscanf(line_str.c_str(),"%d %d",&first_num,&second_num);
+			makelink(network,first_num,second_num);
+		}
+		fo2.close();
+	}
 }
