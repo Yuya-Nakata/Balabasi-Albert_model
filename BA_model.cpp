@@ -3,6 +3,8 @@
 #include<istream>
 #include "makelink.h"
 
+#define create 0
+#define read 1
 using namespace std;
 
 int main(){
@@ -11,6 +13,7 @@ int main(){
 	int start_num = 2; //初期端末数 sampleは2
 	int network[t_num][t_num] ={0};	//各端末間の接続状態を 0/1の二次元配列で表現 0＝未接続 1＝接続
         int link_num[t_num] ={0}; //各端末の接続数
+	int topology_flag = create;
 	for(int i =0; i < start_num; i++){
 		link_num[i] = start_num - 1;  //必ず最初の端末間は完全グラフとなるため、全てのノード間に辺を貼るときの個々のノードの接続数を記録
 	}
